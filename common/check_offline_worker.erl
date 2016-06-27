@@ -18,10 +18,14 @@ fun({N, Pid})
 end,
 M = lists:filtermap(GetQlen, ets:tab2list(offline)),
 io:format("~p~n", [M]),
-if erlang:length(M) > 0 ->
-	supervisor:terminate_child(message_store_sup, offline),
-	supervisor:restart_child(message_store_sup, offline);
-    true ->
-        ok
+case Args of
+    ["restart"] ->
+        if erlang:length(M) > 0 ->
+	        supervisor:terminate_child(message_store_sup, offline),
+	        supervisor:restart_child(message_store_sup, offline);
+        true ->
+            ok
+        end;
+    _ -> ok
 end,
 ok.
