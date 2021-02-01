@@ -78,8 +78,10 @@ destruct(Terms) ->
                               []
                       end, Terms),
 
-    lists:map(fun([{Name, Value}]) ->
-                      io_lib:format("~s ~p~n", [Name, Value]);
+    lists:map(fun(List) when is_list(List)  ->
+		      lists:map(fun({Name,Value}) ->
+                      	io_lib:format("~s ~p~n", [Name, Value])
+		      end, List);
                  ({Name, Value}) ->
                       io_lib:format("~s ~p~n", [Name, Value])
               end, Results).
